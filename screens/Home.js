@@ -1,21 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import Weather from './Weather';
 
 export default function Home() {
 
+    const [city, setCity] = useState('')
+    const [showWeather, setShowWeather] = useState(false)
 
+    const handleSearch = () => {
+        setShowWeather(true)
+    }
  return (
         <View style={styles.container}>
             <TextInput
                 style={styles.input}
                 placeholder='Search by city'
                 returnKeyType="default"
+                value={city}
+                onChangeText={text => setCity(text)}
             />
             <Button
                 style={styles.button}
                 title="Search"
+                onPress={handleSearch}
             />
+            <View>
+                {showWeather && <Weather city={city} />}
+            </View>
             <StatusBar style="auto" />
         </View>
     );
