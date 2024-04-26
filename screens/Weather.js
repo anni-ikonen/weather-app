@@ -5,7 +5,7 @@ import { API_KEY } from '@env'
 
 export default function Weather({ city }) {
 
-    const [weather, setWeather] = useState({ city: '', weather: '', temperature: '' })
+    const [weather, setWeather] = useState({ city: '', weather: '', temperature: '', feels: '', humidity: '' })
 
     useEffect(() => {
         fetchCityData()
@@ -34,7 +34,9 @@ export default function Weather({ city }) {
                 setWeather({
                     city: responseData.name,
                     weather: responseData.weather[0].main,
-                    temperature: responseData.main.temp
+                    temperature: responseData.main.temp,
+                    feels: responseData.main.feels_like,
+                    humidity: responseData.main.humidity
                 });
             })
             .catch(error => console.error("Error fetching weather data", error));
@@ -45,6 +47,8 @@ export default function Weather({ city }) {
             <Text>City: {weather.city}</Text>
             <Text>Weather: {weather.weather}</Text>
             <Text>Temperature: {Math.round(weather.temperature)} °C</Text>
+            <Text>Feels like: {Math.round(weather.feels)} °C</Text>
+            <Text>Humidity: {weather.humidity}%</Text>
         </View>
     );
 }
