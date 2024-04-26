@@ -2,8 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import Weather from './Weather';
-
-export default function Home() {
+export default function Search() {
 
     const [city, setCity] = useState('')
     const [showWeather, setShowWeather] = useState(false)
