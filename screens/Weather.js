@@ -62,12 +62,6 @@ export default function Weather({ city, onClose }) {
 }
 
 const styles = StyleSheet.create({
-    modal: {
-        backgroundColor: 'white',
-        padding: 20,
-        margin: 40,
-        borderRadius: 10,
-    },
     card: {
         borderRadius: 10,
     },
