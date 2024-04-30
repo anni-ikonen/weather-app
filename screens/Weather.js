@@ -1,36 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState, useEffect } from 'react';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
-import { API_KEY } from '@env'
+import React, { useState, useEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import { Button, Card, Title, Paragraph } from 'react-native-paper';
+import { API_KEY } from '@env';
 
-export default function Weather({ city }) {
-
-    const [weather, setWeather] = useState({ city: '', weather: '', temperature: '', feels: '', humidity: '' })
+export default function Weather({ city, onClose }) {
+    const [weather, setWeather] = useState({
+        city: '',
+        weather: '',
+        temperature: '',
+        feels: '',
+        humidity: ''
+    });
 
     useEffect(() => {
-        fetchCityData()
+        fetchCityData();
     }, []);
 
-    // fetches the citys longitude and latitude
     const fetchCityData = () => {
         fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`)
             .then(response => response.json())
             .then(responseData => {
                 const lat = responseData[0].lat;
                 const lon = responseData[0].lon;
-
-                //setLatitude(lat);
-                //setLongitude(lon);
+                console.log("Latitude:", lat, "Longitude:", lon); 
                 fetchWeather(lat, lon);
             })
             .catch(error => console.error("Error fetching city data", error));
     }
 
-    // fetches the weather with longitude and latitude
     const fetchWeather = (lat, lon) => {
         fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`)
             .then(response => response.json())
             .then(responseData => {
+                console.log("Weather Data:", responseData); 
                 setWeather({
                     city: responseData.name,
                     weather: responseData.weather[0].main,
@@ -43,31 +45,30 @@ export default function Weather({ city }) {
     }
 
     return (
-        <View style={styles.container}>
-            <Text>City: {weather.city}</Text>
-            <Text>Weather: {weather.weather}</Text>
-            <Text>Temperature: {Math.round(weather.temperature)} °C</Text>
-            <Text>Feels like: {Math.round(weather.feels)} °C</Text>
-            <Text>Humidity: {weather.humidity}%</Text>
-        </View>
+            <Card style={styles.card}>
+                <Card.Content>
+                    <Title>{weather.city}</Title>
+                    <Paragraph>Weather: {weather.weather}</Paragraph>
+                    <Paragraph>Temperature: {Math.round(weather.temperature)} °C</Paragraph>
+                    <Paragraph>Feels like: {Math.round(weather.feels)} °C</Paragraph>
+                    <Paragraph>Humidity: {weather.humidity}%</Paragraph>
+                </Card.Content>
+                <Card.Actions>
+                    <Button onPress={onClose}>Close</Button>
+                </Card.Actions>
+            </Card>
+
     );
 }
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1, //keep it as 1!!
-        backgroundColor: '#fff',
-        alignItems: 'center',
+    modal: {
+        backgroundColor: 'white',
+        padding: 20,
+        margin: 40,
+        borderRadius: 10,
     },
-    input: {
-        fontSize: 20,
-        width: 200,
-        marginTop: 40,
-        borderWidth: 1,
-        borderColor: 'black',
-        borderRadius: 15,
-        padding: 8,
+    card: {
+        borderRadius: 10,
     },
-    button: {
-        marginTop: 50,
-    }
 });

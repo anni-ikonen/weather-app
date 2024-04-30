@@ -1,41 +1,48 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, TextInput, View, Button } from 'react-native';
+import { Modal } from 'react-native-paper';
 import Weather from './Weather';
-export default function Search() {
 
-    const [city, setCity] = useState('')
-    const [showWeather, setShowWeather] = useState(false)
+export default function Search() {
+    const [city, setCity] = useState('');
+    const [showWeather, setShowWeather] = useState(false);
 
     const handleSearch = () => {
-        setShowWeather(true)
+        setShowWeather(true);
     }
- return (
-        <View style={styles.container}>
-            <TextInput
-                style={styles.input}
-                placeholder='Search by city'
-                returnKeyType="default"
-                value={city}
-                onChangeText={text => setCity(text)}
-            />
-            <Button
-                style={styles.button}
-                title="Search"
-                onPress={handleSearch}
-            />
-            <View>
-                {showWeather && <Weather city={city} />}
+
+    const handleCloseWeather = () => {
+        setShowWeather(false);
+        setCity('')
+    }
+
+    return (
+            <View style={styles.container}>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Search by city'
+                    returnKeyType="default"
+                    value={city}
+                    onChangeText={text => setCity(text)}
+                />
+                <Button
+                    style={styles.button}
+                    title="Search"
+                    onPress={handleSearch}
+                />
+                <Modal visible={showWeather} onDismiss={handleCloseWeather}>
+                    <Weather city={city} onClose={handleCloseWeather} />
+                </Modal>
             </View>
-            <StatusBar style="auto" />
-        </View>
     );
 }
+
 const styles = StyleSheet.create({
     container: {
-        flex: 1, //keep it as 1!!
+        flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
+        justifyContent: 'center',
     },
     input: {
         fontSize: 20,
@@ -47,6 +54,6 @@ const styles = StyleSheet.create({
         padding: 8,
     },
     button: {
-        marginTop: 50,
+        marginTop: 20,
     }
 });
