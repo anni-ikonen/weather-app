@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, View } from 'react-native'
 import { Modal, Button } from 'react-native-paper'
 import Weather from './Weather'
 import Favorites from './Favorites'
-import CurrentWeather from './CurrentWeather'
+import CurrentLocation from './CurrentLocation'
 import * as SQLite from 'expo-sqlite'
 
 export default function Home() {
@@ -78,7 +78,7 @@ export default function Home() {
                 style={styles.button}
                 onPress={handleShowFavorites}
             >Your favorites!</Button>
-            <CurrentWeather />
+            <CurrentLocation />
             <Modal visible={showWeather}>
                 <Weather city={city} onClose={handleCloseWeather} saveCity={saveCity} />
             </Modal>
