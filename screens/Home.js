@@ -6,7 +6,7 @@ import Favorites from './Favorites'
 import CurrentWeather from './CurrentWeather'
 import * as SQLite from 'expo-sqlite'
 
-export default function Search() {
+export default function Home() {
     const [city, setCity] = useState('')
     const [showWeather, setShowWeather] = useState(false)
     const [showFavorites, setShowFavorites] = useState(false)
