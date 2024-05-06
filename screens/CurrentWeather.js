@@ -5,7 +5,7 @@ import * as Location from 'expo-location';
 import { API_KEY } from '@env';
 
 export default function CurrentWeather() {
-    
+
     const [location, setLocation] = useState({
         lat: '',
         lon: ''
@@ -58,12 +58,12 @@ export default function CurrentWeather() {
 
     return (
         <View style={styles.card}>
-                <Title>Current weather at your location!</Title>
-                <Text>City: {weather.city}</Text>
-                <Text>Weather: {weather.weather}</Text>
-                <Text>Temperature: {Math.round(weather.temperature)} °C</Text>
-                <Text>Feels like: {Math.round(weather.feels)} °C</Text>
-                <Text>Humidity: {weather.humidity}%</Text>
+            <Title>Current weather at your location!</Title>
+            <Paragraph>City: {weather.city}</Paragraph>
+            <Paragraph>Weather: {weather.weather}</Paragraph>
+            <Paragraph>Temperature: {Math.round(weather.temperature)} °C</Paragraph>
+            <Paragraph>Feels like: {Math.round(weather.feels)} °C</Paragraph>
+            <Paragraph>Humidity: {weather.humidity}%</Paragraph>
         </View>
     );
 }
