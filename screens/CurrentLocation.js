@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { Button, Card, Title, Paragraph, Icon, MD3Colors } from 'react-native-paper';
-import * as Location from 'expo-location';
-import { API_KEY } from '@env';
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { Title, Paragraph } from 'react-native-paper'
+import * as Location from 'expo-location'
+import { API_KEY } from '@env'
 
-export default function CurrentWeather() {
+export default function CurrentLocation() {
 
     const [location, setLocation] = useState({
         lat: '',
@@ -17,41 +17,41 @@ export default function CurrentWeather() {
         temperature: '',
         feels: '',
         humidity: ''
-    });
+    })
 
     useEffect(() => {
         (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
+            let { status } = await Location.requestForegroundPermissionsAsync()
             if (status !== 'granted') {
                 Alert.alert('No permission to get location')
-                return;
+                return
             }
-            let locationData = await Location.getCurrentPositionAsync({});
+            let locationData = await Location.getCurrentPositionAsync({})
             setLocation({
                 lat: locationData.coords.latitude,
                 lon: locationData.coords.longitude
             })
-        })();
-    }, []);
+        })()
+    }, [])
 
     useEffect(() => {
         if (location.lat !== '' && location.lon !== '') {
-            fetchWeather();
+            fetchWeather()
         }
-    }, [location]);
+    }, [location])
 
     const fetchWeather = () => {
         fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${API_KEY}`)
             .then(response => response.json())
             .then(responseData => {
-                console.log("Weather Data:", responseData);
+                console.log("Weather Data:", responseData)
                 setWeather({
                     city: responseData.name,
                     weather: responseData.weather[0].main,
                     temperature: responseData.main.temp,
                     feels: responseData.main.feels_like,
                     humidity: responseData.main.humidity
-                });
+                })
             })
             .catch(error => console.error("Error fetching weather data", error));
     }
@@ -65,7 +65,7 @@ export default function CurrentWeather() {
             <Paragraph>Feels like: {Math.round(weather.feels)} °C</Paragraph>
             <Paragraph>Humidity: {weather.humidity}%</Paragraph>
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 20
     },
-});
+})
