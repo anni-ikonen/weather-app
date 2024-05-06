@@ -31,7 +31,7 @@ export default function Search() {
         setShowFavorites(false)
     }
 
-    const db = SQLite.openDatabase('coursedb.db')
+    const db = SQLite.openDatabase('favoritesdb.db')
 
     useEffect(() => {
         db.transaction(tx => {
