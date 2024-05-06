@@ -54,10 +54,10 @@ export default function Weather({ city, onClose }) {
                     <Paragraph>Humidity: {weather.humidity}%</Paragraph>
                 </Card.Content>
                 <Card.Actions>
+                <Button>Save to favorites</Button>
                     <Button onPress={onClose}>Close</Button>
                 </Card.Actions>
             </Card>
-
     );
 }
 
