@@ -1,0 +1,78 @@
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { Button, Card, Title, Paragraph, Icon, MD3Colors } from 'react-native-paper';
+import * as Location from 'expo-location';
+import { API_KEY } from '@env';
+
+export default function CurrentWeather() {
+    
+    const [location, setLocation] = useState({
+        lat: '',
+        lon: ''
+    })
+
+    const [weather, setWeather] = useState({
+        city: '',
+        weather: '',
+        temperature: '',
+        feels: '',
+        humidity: ''
+    });
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert('No permission to get location')
+                return;
+            }
+            let locationData = await Location.getCurrentPositionAsync({});
+            setLocation({
+                lat: locationData.coords.latitude,
+                lon: locationData.coords.longitude
+            })
+        })();
+    }, []);
+
+    useEffect(() => {
+        if (location.lat !== '' && location.lon !== '') {
+            fetchWeather();
+        }
+    }, [location]);
+
+    const fetchWeather = () => {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${API_KEY}`)
+            .then(response => response.json())
+            .then(responseData => {
+                console.log("Weather Data:", responseData);
+                setWeather({
+                    city: responseData.name,
+                    weather: responseData.weather[0].main,
+                    temperature: responseData.main.temp,
+                    feels: responseData.main.feels_like,
+                    humidity: responseData.main.humidity
+                });
+            })
+            .catch(error => console.error("Error fetching weather data", error));
+    }
+
+    return (
+        <View style={styles.card}>
+                <Title>Current weather at your location!</Title>
+                <Text>City: {weather.city}</Text>
+                <Text>Weather: {weather.weather}</Text>
+                <Text>Temperature: {Math.round(weather.temperature)} °C</Text>
+                <Text>Feels like: {Math.round(weather.feels)} °C</Text>
+                <Text>Humidity: {weather.humidity}%</Text>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    card: {
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20
+    },
+});
